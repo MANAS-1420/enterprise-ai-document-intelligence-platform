@@ -15,6 +15,11 @@ from src.utils.helpers import (
 from src.utils.logger import get_logger
 from src.utils.pdf_export import export_report_to_pdf
 
+from ui.sidebar import render_sidebar
+from ui.upload_ui import render_upload_section
+from ui.chat_ui import render_chat_history, append_chat
+from ui.dashboard import render_dashboard_metrics
+from ui.insights_ui import render_text_panel
 from src.loaders.pdf_loader import load_pdf
 from src.loaders.docx_loader import load_docx
 from src.loaders.text_loader import load_text
