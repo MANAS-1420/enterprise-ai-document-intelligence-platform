@@ -1,62 +1,232 @@
+:root {
+    --bg: #0b1220;
+    --card: #111827;
+    --card-2: #172033;
+    --border: rgba(255, 255, 255, 0.08);
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --accent: #7c3aed;
+    --accent-2: #06b6d4;
+    --success: #10b981;
+    --warning: #f59e0b;
+}
+
+html, body, [class*="css"] {
+    font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.stApp {
+    background:
+        radial-gradient(circle at top left, rgba(124, 58, 237, 0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(6, 182, 212, 0.14), transparent 28%),
+        linear-gradient(180deg, #08101d 0%, #0b1220 100%);
+    color: var(--text);
+}
+
+.block-container {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+    max-width: 1250px;
+}
+
 .main-title {
-    font-size: 2.2rem;
+    font-size: 2.6rem;
     font-weight: 800;
-    color: #111827;
-    margin-bottom: 0.2rem;
+    color: #ffffff;
+    line-height: 1.15;
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.02em;
 }
 
 .sub-title {
-    font-size: 1rem;
-    color: #4b5563;
-    margin-bottom: 1rem;
+    font-size: 1.02rem;
+    color: #cbd5e1;
+    margin-bottom: 0;
+    max-width: 900px;
+    line-height: 1.6;
 }
 
 .hero-card {
-    padding: 1.2rem 1.2rem;
-    border-radius: 18px;
-    background: linear-gradient(135deg, #f8fafc, #eef2ff);
-    border: 1px solid #e5e7eb;
+    padding: 1.6rem 1.6rem;
+    border-radius: 24px;
+    background:
+        linear-gradient(135deg, rgba(124, 58, 237, 0.22), rgba(6, 182, 212, 0.14)),
+        rgba(17, 24, 39, 0.85);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(10px);
+    margin-bottom: 1.2rem;
+}
+
+.glass-card {
+    padding: 1rem 1rem;
+    border-radius: 20px;
+    background: rgba(17, 24, 39, 0.82);
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(10px);
     margin-bottom: 1rem;
 }
 
 .panel-card {
-    padding: 1rem;
-    border-radius: 16px;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    padding: 1rem 1rem;
+    border-radius: 18px;
+    background: rgba(17, 24, 39, 0.88);
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
     margin-bottom: 1rem;
+    color: var(--text);
 }
 
 .source-box {
-    padding: 0.8rem;
-    border-radius: 12px;
-    background: #f9fafb;
-    border-left: 4px solid #6366f1;
-    margin-bottom: 0.8rem;
+    padding: 1rem;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(23, 32, 51, 0.92), rgba(17, 24, 39, 0.92));
+    border: 1px solid rgba(124, 58, 237, 0.22);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    margin-bottom: 0.9rem;
+    color: #e5e7eb;
 }
 
 .badge {
     display: inline-block;
-    padding: 0.35rem 0.6rem;
+    padding: 0.45rem 0.75rem;
     border-radius: 999px;
-    background: #eef2ff;
-    color: #4338ca;
-    font-size: 0.85rem;
+    background: rgba(124, 58, 237, 0.15);
+    border: 1px solid rgba(124, 58, 237, 0.28);
+    color: #e9d5ff;
+    font-size: 0.84rem;
+    font-weight: 600;
+    margin-right: 0.45rem;
+    margin-bottom: 0.45rem;
+}
+
+.info-pill {
+    display: inline-block;
+    padding: 0.42rem 0.72rem;
+    border-radius: 999px;
+    background: rgba(6, 182, 212, 0.12);
+    border: 1px solid rgba(6, 182, 212, 0.24);
+    color: #cffafe;
+    font-size: 0.82rem;
     font-weight: 600;
     margin-right: 0.4rem;
     margin-bottom: 0.4rem;
 }
 
+.metric-card {
+    padding: 1rem 1rem;
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(23, 32, 51, 0.9), rgba(17, 24, 39, 0.92));
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+.metric-title {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.metric-value {
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.7rem;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.8rem;
+}
+
 .small-note {
-    color: #6b7280;
+    color: #94a3b8;
     font-size: 0.9rem;
 }
 
-.metric-card {
-    padding: 0.9rem;
+.stTabs [data-baseweb="tab-list"] {
+    gap: 0.5rem;
+    background: rgba(17, 24, 39, 0.7);
+    padding: 0.45rem;
     border-radius: 16px;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+}
+
+.stTabs [data-baseweb="tab"] {
+    border-radius: 12px;
+    color: #cbd5e1;
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+}
+
+.stTabs [aria-selected="true"] {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.9), rgba(6, 182, 212, 0.85)) !important;
+    color: white !important;
+}
+
+.stButton > button,
+.stDownloadButton > button {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid rgba(124, 58, 237, 0.25);
+    background: linear-gradient(135deg, #7c3aed, #06b6d4);
+    color: white;
+    font-weight: 700;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 8px 18px rgba(124, 58, 237, 0.22);
+}
+
+.stButton > button:hover,
+.stDownloadButton > button:hover {
+    transform: translateY(-1px);
+    transition: 0.2s ease;
+    border-color: rgba(255,255,255,0.2);
+}
+
+.stTextInput input,
+.stTextArea textarea,
+.stSelectbox div[data-baseweb="select"] > div,
+.stMultiSelect div[data-baseweb="select"] > div {
+    border-radius: 14px !important;
+    background: rgba(17, 24, 39, 0.85) !important;
+    color: white !important;
+    border: 1px solid var(--border) !important;
+}
+
+.stFileUploader > div {
+    border-radius: 18px !important;
+    border: 1px dashed rgba(124, 58, 237, 0.35) !important;
+    background: rgba(17, 24, 39, 0.72) !important;
+}
+
+section[data-testid="stSidebar"] {
+    background:
+        linear-gradient(180deg, rgba(11, 18, 32, 0.98), rgba(15, 23, 42, 0.98));
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+section[data-testid="stSidebar"] .stMarkdown,
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span {
+    color: #e2e8f0 !important;
+}
+
+[data-testid="stMetric"] {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+mark {
+    background: rgba(245, 158, 11, 0.24);
+    color: #fff7ed;
+    padding: 0.05rem 0.18rem;
+    border-radius: 6px;
+}
+
+hr {
+    border-color: rgba(255,255,255,0.08);
 }
