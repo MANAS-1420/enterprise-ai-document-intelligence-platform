@@ -1,7 +1,10 @@
 import os
 import streamlit as st
 import pandas as pd
+import sys
+import os
 
+sys.path.append(os.path.abspath("."))
 from config.settings import APP_TITLE, APP_SUBTITLE, RAW_DATA_DIR
 from src.utils.helpers import (
     ensure_dir,
