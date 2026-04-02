@@ -1,7 +1,11 @@
 import streamlit as st
 
 def render_sidebar():
-    st.sidebar.markdown("## ⚙️ Configuration")
+    st.sidebar.markdown("## ⚙️ Workspace Settings")
+    st.sidebar.markdown(
+        '<p class="small-note">Configure your model, retrieval, and display settings.</p>',
+        unsafe_allow_html=True
+    )
 
     llm_provider = st.sidebar.selectbox(
         "LLM Provider",
@@ -20,13 +24,19 @@ def render_sidebar():
     enable_query_rewrite = st.sidebar.checkbox("Enable Query Rewrite", value=True)
 
     st.sidebar.markdown("---")
-    st.sidebar.info(
-        "Recommended flow:\n"
-        "1. Upload documents\n"
-        "2. Build knowledge base\n"
-        "3. Chat with documents\n"
-        "4. Generate summary, risks, clauses, keywords, and report"
+    st.sidebar.markdown("### 🚀 Workflow")
+    st.sidebar.markdown(
+        """
+        1. Upload documents  
+        2. Build knowledge base  
+        3. Chat with documents  
+        4. Generate summaries and reports
+        """
     )
+
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("### 🧠 Project Mode")
+    st.sidebar.info("Enterprise AI Document Intelligence Platform")
 
     return {
         "llm_provider": llm_provider,
