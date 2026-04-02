@@ -1,10 +1,11 @@
-import os
-import streamlit as st
-import pandas as pd
 import sys
 import os
 
 sys.path.append(os.path.abspath("."))
+
+import streamlit as st
+import pandas as pd
+
 from config.settings import APP_TITLE, APP_SUBTITLE, RAW_DATA_DIR
 from src.utils.helpers import (
     ensure_dir,
@@ -18,11 +19,6 @@ from src.utils.helpers import (
 from src.utils.logger import get_logger
 from src.utils.pdf_export import export_report_to_pdf
 
-from ui.sidebar import render_sidebar
-from ui.upload_ui import render_upload_section
-from ui.chat_ui import render_chat_history, append_chat
-from ui.dashboard import render_dashboard_metrics
-from ui.insights_ui import render_text_panel
 from src.loaders.pdf_loader import load_pdf
 from src.loaders.docx_loader import load_docx
 from src.loaders.text_loader import load_text
@@ -62,11 +58,13 @@ st.set_page_config(
     layout="wide"
 )
 
+
 def load_css():
     css_path = "assets/styles.css"
     if os.path.exists(css_path):
         with open(css_path, "r", encoding="utf-8") as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
 
 def init_session():
     defaults = {
@@ -91,6 +89,7 @@ def init_session():
         if k not in st.session_state:
             st.session_state[k] = v
 
+
 def load_documents_from_paths(file_paths):
     all_docs = []
 
@@ -110,9 +109,11 @@ def load_documents_from_paths(file_paths):
 
     return all_docs
 
+
 @st.cache_resource(show_spinner=False)
 def cached_embedding_model():
     return get_embedding_model()
+
 
 def build_knowledge_base(uploaded_files, vector_db_choice, top_k):
     ensure_dir(RAW_DATA_DIR)
@@ -153,6 +154,7 @@ def build_knowledge_base(uploaded_files, vector_db_choice, top_k):
     st.session_state.vector_db_type = vector_db_choice
 
     logger.info("Knowledge base built successfully.")
+
 
 def handle_chat_query(user_query: str, llm, config):
     intent = classify_query_intent(user_query)
@@ -227,19 +229,66 @@ def handle_chat_query(user_query: str, llm, config):
         "average_score": retrieval_result["average_score"]
     }
 
-def main():
-    load_css()
-    init_session()
 
+def render_hero():
     st.markdown(
         f"""
         <div class="hero-card">
+            <div class="info-pill">GenAI</div>
+            <div class="info-pill">RAG</div>
+            <div class="info-pill">Enterprise UI</div>
             <div class="main-title">{APP_TITLE}</div>
             <div class="sub-title">{APP_SUBTITLE}</div>
         </div>
         """,
         unsafe_allow_html=True
     )
+
+
+def render_ready_state():
+    st.markdown(
+        f"""
+        <div class="glass-card">
+            <div class="section-title">✅ Knowledge Base Ready</div>
+            <div class="small-note">Loaded {len(st.session_state.doc_names)} document(s)</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.caption("Uploaded: " + ", ".join(st.session_state.doc_names))
+
+    st.markdown(
+        f"""<span class="badge">Detected Type: {st.session_state.doc_type}</span>""",
+        unsafe_allow_html=True
+    )
+
+    for kw, count in st.session_state.top_keywords[:6]:
+        st.markdown(
+            f"""<span class="badge">{kw} ({count})</span>""",
+            unsafe_allow_html=True
+        )
+
+
+def render_workspace_header():
+    st.markdown(
+        """
+        <div class="glass-card">
+            <div class="section-title">🧩 Analysis Workspace</div>
+            <div class="small-note">
+                Use the tabs below to chat with documents, generate summaries, extract risks and clauses,
+                compare files, and explore analytics.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+def main():
+    load_css()
+    init_session()
+    render_hero()
 
     config = render_sidebar()
     uploaded_files = render_upload_section()
@@ -266,23 +315,11 @@ def main():
 
     with col_b:
         if st.session_state.knowledge_ready:
-            st.success(f"Knowledge base ready for {len(st.session_state.doc_names)} document(s).")
-            st.caption("Uploaded: " + ", ".join(st.session_state.doc_names))
-
-            st.markdown(
-                f"""
-                <span class="badge">Detected Type: {st.session_state.doc_type}</span>
-                """,
-                unsafe_allow_html=True
-            )
-
-            for kw, count in st.session_state.top_keywords[:6]:
-                st.markdown(
-                    f"""<span class="badge">{kw} ({count})</span>""",
-                    unsafe_allow_html=True
-                )
+            render_ready_state()
 
     if st.session_state.knowledge_ready:
+        render_workspace_header()
+
         tabs = st.tabs([
             "💬 Chat",
             "🧾 Executive Summary",
@@ -308,6 +345,7 @@ def main():
 
                     with st.chat_message("assistant"):
                         st.markdown(result["answer"])
+                        st.markdown("---")
 
                         st.markdown("### ✅ Confidence")
                         avg_score = result.get("average_score", 0.0)
@@ -316,17 +354,19 @@ def main():
                         else:
                             st.markdown(f"**{result['confidence']}**")
 
+                        st.markdown("---")
                         st.markdown("### 🧠 Why this answer?")
                         for reason in result["explainability"]:
                             st.markdown(f"- {reason}")
 
                         if result["mode"] == "qa":
+                            st.markdown("---")
                             st.markdown("### 💡 Suggested Follow-up Questions")
                             followups = generate_followup_questions(user_query, result["answer"], llm)
                             st.markdown(followups)
 
                     if config["show_chunks"] and result.get("source_docs"):
-                        st.markdown("### 📚 Source Chunks")
+                        st.markdown('<div class="section-title">📚 Source Chunks</div>', unsafe_allow_html=True)
                         highlight_terms = ["risk", "penalty", "fraud", "termination", "liability", "payment"]
 
                         for i, doc in enumerate(result["source_docs"], start=1):
@@ -336,11 +376,13 @@ def main():
                             st.markdown(
                                 f"""
                                 <div class="source-box">
-                                    <b>Chunk {i}</b><br>
+                                    <div style="margin-bottom: 0.55rem;">
+                                        <span class="badge">Chunk {i}</span>
+                                        <span class="badge">Score: {pretty_score(score)}</span>
+                                    </div>
                                     <b>Document:</b> {doc.metadata.get('document_name', 'unknown')}<br>
                                     <b>Page:</b> {doc.metadata.get('page', 'NA')}<br>
-                                    <b>Chunk Index:</b> {doc.metadata.get('chunk_index', 'NA')}<br>
-                                    <b>Relevance Score:</b> {pretty_score(score)}<br><br>
+                                    <b>Chunk Index:</b> {doc.metadata.get('chunk_index', 'NA')}<br><br>
                                     {highlighted_text}
                                 </div>
                                 """,
@@ -353,7 +395,7 @@ def main():
                     st.exception(e)
 
         with tabs[1]:
-            st.markdown("### 🧾 Executive Summary")
+            st.markdown('<div class="section-title">🧾 Executive Summary</div>', unsafe_allow_html=True)
             if st.button("Generate Executive Summary", use_container_width=True) and llm:
                 try:
                     with st.spinner("Generating executive summary..."):
@@ -402,7 +444,7 @@ def main():
             if st.session_state.clauses_text:
                 render_text_panel("Clause Extraction", st.session_state.clauses_text)
 
-            st.markdown("### 🔑 Top Keywords")
+            st.markdown('<div class="section-title">🔑 Top Keywords</div>', unsafe_allow_html=True)
             if st.session_state.top_keywords:
                 keyword_lines = "\n".join([f"- {kw}: {count}" for kw, count in st.session_state.top_keywords])
                 render_text_panel("Top Keywords", keyword_lines)
@@ -452,7 +494,7 @@ def main():
                         st.exception(e)
 
         with tabs[3]:
-            st.markdown("### ⚖️ Compare Documents")
+            st.markdown('<div class="section-title">⚖️ Compare Documents</div>', unsafe_allow_html=True)
             doc_names = st.session_state.doc_names
 
             if len(doc_names) < 2:
@@ -484,12 +526,27 @@ def main():
             render_dashboard_metrics(st.session_state.chunks_df, st.session_state.top_keywords)
 
             if not st.session_state.chunks_df.empty:
-                st.markdown("### 🔎 Search Inside Chunks")
+                st.markdown('<div class="section-title">🔎 Search Inside Chunks</div>', unsafe_allow_html=True)
                 keyword = st.text_input("Enter keyword to search in processed chunks")
 
                 if keyword:
                     filtered = keyword_search_dataframe(st.session_state.chunks_df, keyword)
                     st.dataframe(filtered, use_container_width=True)
+
+    else:
+        st.markdown(
+            """
+            <div class="glass-card">
+                <div class="section-title">✨ Ready to Analyze</div>
+                <div class="small-note">
+                    Upload one or more business documents, configure your workspace from the sidebar,
+                    and build your AI-powered knowledge base.
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
 
 if __name__ == "__main__":
     main()
