@@ -1,60 +1,60 @@
-# Enterprise AI Document Intelligence Platform
+# 🚀 Enterprise AI Document Intelligence Platform
 
-A production-style **multi-document RAG-based GenAI application** built using **Python, Streamlit, LangChain, HuggingFace embeddings, FAISS/Chroma, and Gemini/OpenAI/Groq**.
-
-This is not just a “chat with PDF” app. It is designed as an **enterprise AI document intelligence system** with business-focused analysis features.
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-red)
+![LangChain](https://img.shields.io/badge/LangChain-RAG-green)
+![GenAI](https://img.shields.io/badge/GenAI-Project-purple)
 
 ---
 
-## Features
+## 📌 Overview
 
-### Core RAG Features
-- Upload and analyze multiple documents
-- Supports PDF, TXT, DOCX
-- Intelligent chunking
-- HuggingFace embeddings
-- FAISS or Chroma vector database
-- Source-grounded Q&A
-- Chunk-level retrieval relevance score
-- Query rewriting
-- Session chat history
+An **enterprise-grade GenAI application** that enables intelligent analysis of business documents using **Retrieval-Augmented Generation (RAG)**.
 
-### Advanced Enterprise Features
+This project goes beyond a simple “chat with PDF” — it provides:
+- 📊 Business insights  
+- ⚠️ Risk analysis  
+- 📜 Clause extraction  
+- ⚖️ Document comparison  
+- 🧠 Explainable AI outputs  
+
+Built with a **production-style architecture** and deployed using **Streamlit Cloud**.
+
+---
+
+## ✨ Features
+
+### 🧠 Core AI Capabilities
+- Multi-document upload (PDF, DOCX, TXT)
+- RAG-based question answering
+- Query rewriting for better retrieval
+- Source-grounded responses
+- Confidence scoring + explainability
+
+### 📊 Business Intelligence
 - Executive summary generation
 - Key insights extraction
-- Risk analysis
-- Clause extraction
-- Query intent routing
-- Explainability layer: “Why this answer?”
+- Risk detection (fraud, penalties, breach, etc.)
+- Clause extraction (payment, liability, termination)
 - Document type detection
-- Keyword extraction
-- Follow-up question suggestions
+
+### ⚖️ Advanced Features
 - Multi-document comparison
-- Search inside processed chunks
-- TXT report download
-- PDF report export
-- Plotly dashboard
-- Premium Streamlit UI
+- Follow-up question generation
+- Keyword extraction
+- Search inside document chunks
+- Downloadable TXT & PDF reports
+
+### 🎨 UI & Experience
+- Premium dark SaaS-style UI
+- Interactive dashboard with Plotly
+- Chunk-level source visualization
+- Clean modular frontend (Streamlit)
 
 ---
 
-## Tech Stack
+## 🏗️ Architecture
 
-- Python
-- Streamlit
-- LangChain
-- HuggingFace Embeddings
-- FAISS / Chroma
-- Groq / Gemini / OpenAI
-- Pandas
-- Plotly
-- PyPDF / DOCX / TXT loaders
-- FPDF
-
----
-
-## Setup
-
-### 1. Create virtual environment
-```bash
-python -m venv venv
+```text
+Document → Loader → Cleaner → Chunking → Embeddings → Vector DB
+         → Retriever → LLM → Structured Answer + Insights
